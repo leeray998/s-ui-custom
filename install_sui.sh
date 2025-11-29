@@ -1,4 +1,5 @@
-#!/bin/bash
+downloadVERSION=1.2.2 && bash <(curl -Ls https://raw.githubusercontent.com/alireza0/s-ui/$VERSION/install.sh) $VERSION
+downloaddownload#!/bin/bash
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -101,7 +102,23 @@ fi
 install_base() {
     case "${release}" in
     centos | almalinux | rocky | oracle)
+        yum -y update && yum install -y -q 
+install_base() {
+    case "${release}" in
+    centos | almalinux | rocky | oracle)
         yum -y update && yum install -y -q wget curl tar tzdata
+        ;;
+    fedora)
+        dnf -y update && dnf install -y -q wget curl tar tzdata
+        ;;
+    arch | manjaro | parch)
+        pacman -Syu && pacman -Syu --noconfirm wget curl tar tzdata
+        ;;
+    opensuse-tumbleweed)
+        zypper refresh && zypper -q install -y wget curl tar timezone
+        ;;
+    *)
+wget curl tar tzdata
         ;;
     fedora)
         dnf -y update && dnf install -y -q wget curl tar tzdata
@@ -201,14 +218,14 @@ install_s-ui() {
             exit 1
         fi
         echo -e "Got s-ui latest version: ${last_version}, beginning the installation..."
-        wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz https://github.com/alireza0/s-ui/releases/download/${last_version}/s-ui-linux-$(arch).tar.gz
+        wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz https://github.com/alireza0/s-ui/releases/download/v1.2.2/s-ui-linux-$(arch).tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}Downloading s-ui failed, please be sure that your server can access Github ${plain}"
             exit 1
         fi
     else
         last_version=$1
-        url="https://github.com/alireza0/s-ui/releases/download/${last_version}/s-ui-linux-$(arch).tar.gz"
+        url="https://github.com/alireza0/s-ui/releases/download/v1.2.2/s-ui-linux-$(arch).tar.gz"
         echo -e "Beginning the install s-ui v$1"
         wget -N --no-check-certificate -O /tmp/s-ui-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
@@ -246,3 +263,4 @@ install_s-ui() {
 echo -e "${green}Executing...${plain}"
 install_base
 install_s-ui $1
+
